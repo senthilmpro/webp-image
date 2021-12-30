@@ -36,14 +36,23 @@ const getAllFiles = async (filePath = "./") => {
           Add the found files within the subdirectory to the files array by calling the
           current function itself
         */
-        files.push(...await FileService.getAllFiles(`${filePath}${folder.name}/`));
+        files.push(...await getAllFiles(`${filePath}/${folder.name}/`));
 
     return files;
 }
 
 const getSourceFiles = async () => {
     let files = await getAllFiles(SRC_IMAGES_FOLDER);
-    return files;
+    // filter only image types
+    const path = require('path');
+    const EXTENSION = ['.jpg','.png', '.jpeg'];
+    const targetFiles = files.filter(file => {
+        const fileExt = path.extname(file.name).toLowerCase();
+        return EXTENSION.includes(fileExt);
+    });
+    console.log("FILES LENGTH : ", files.length);
+    console.log("targetFiles LENGTH : ", targetFiles.length);
+    return targetFiles;
 }
 
 module.exports = {
