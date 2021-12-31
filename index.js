@@ -1,6 +1,9 @@
+
+require('dotenv').config();
 const async = require('async');
 const webpConvert = require('./src/webp-convert');
 const { initSettings, getSourceFiles } = require('./src/webp-helper');
+const { convert } = require('./src/converter');
 
 const main = async () => {
     initSettings();
@@ -16,4 +19,9 @@ const main = async () => {
     });
 }
 
-main();
+const mainSubFolders = async () => {
+    const { SRC_IMAGES_FOLDER, DEST_IMAGES_FOLDER } = process.env;
+    await convert(SRC_IMAGES_FOLDER, DEST_IMAGES_FOLDER);
+}
+
+mainSubFolders();
